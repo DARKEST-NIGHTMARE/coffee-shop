@@ -3,10 +3,13 @@ package com.coffeeshop.coffee_shop_backend.controller;
 import com.coffeeshop.coffee_shop_backend.dto.AuthResponse;
 import com.coffeeshop.coffee_shop_backend.dto.LoginRequest;
 import com.coffeeshop.coffee_shop_backend.dto.RegisterRequest;
+import com.coffeeshop.coffee_shop_backend.dto.StaffUserResponseDto;
 import com.coffeeshop.coffee_shop_backend.service.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -27,5 +30,12 @@ public class AuthController {
     @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest request) {
         return ResponseEntity.ok(authService.register(request));
+    }
+
+
+    @GetMapping("/users")
+    @PreAuthorize("hasRole('MANAGER')")
+    public ResponseEntity<List<StaffUserResponseDto>> getAllUsers() {
+        return ResponseEntity.ok(authService.getAllStaff());
     }
 }

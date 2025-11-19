@@ -3,6 +3,7 @@ package com.coffeeshop.coffee_shop_backend.service;
 import com.coffeeshop.coffee_shop_backend.dto.AuthResponse;
 import com.coffeeshop.coffee_shop_backend.dto.LoginRequest;
 import com.coffeeshop.coffee_shop_backend.dto.RegisterRequest;
+import com.coffeeshop.coffee_shop_backend.dto.StaffUserResponseDto;
 import com.coffeeshop.coffee_shop_backend.model.StaffUser;
 import com.coffeeshop.coffee_shop_backend.repository.StaffUserRepository;
 import com.coffeeshop.coffee_shop_backend.security.JwtService;
@@ -11,6 +12,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AuthService {
@@ -57,5 +61,11 @@ public class AuthService {
         String jwtToken = jwtService.generateToken(user);
 
         return new AuthResponse(jwtToken, user.getUsername(), user.getRole().name());
+    }
+
+    public List<StaffUserResponseDto> getAllStaff(){
+        return staffUserRepository.findAll().stream()
+                .map(StaffUserResponseDto::fromEntity)
+                .collect(Collectors.toList());
     }
 }
