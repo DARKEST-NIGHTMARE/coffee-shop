@@ -30,20 +30,26 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                        .requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers("/api/auth/**").permitAll()
 
-                        // Manager-Only Endpoints
-                        .requestMatchers("/api/menu/**").hasRole("MANAGER")
-                        .requestMatchers("/api/inventory/**").hasRole("MANAGER")
-                        .requestMatchers("/api/reports/**").hasRole("MANAGER")
+                                // Manager-Only Endpoints
+                                .requestMatchers("/api/menu/**").hasRole("MANAGER")
+//                        .requestMatchers("/api/inventory/**").hasRole("MANAGER")
+                                .requestMatchers("/api/reports/**").hasRole("MANAGER")
 
-                        // Barista + Manager Endpoints
-                        .requestMatchers("/api/orders/**").hasAnyRole("MANAGER", "BARISTA")
+                                //Manager and Chef(view) Endpoints
+                                .requestMatchers(HttpMethod.GET, "/api/inventory/**").hasAnyRole("MANAGER", "CHEF")
+                                .requestMatchers(HttpMethod.PUT, "/api/inventory/**").hasAnyRole("MANAGER", "CHEF")
+                                .requestMatchers(HttpMethod.POST, "/api/inventory/**").hasRole("MANAGER")
 
-                        // Any other request must be authenticated
-                        .anyRequest().authenticated()
+                                // Barista + Manager Endpoints
+                                .requestMatchers(HttpMethod.POST, "/api/orders/**").hasAnyRole("MANAGER", "BARISTA")
+                                .requestMatchers("/api/orders/**").hasAnyRole("MANAGER", "BARISTA","CHEF")
+
+                                // Any other request must be authenticated
+                                .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 

@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/orders")
-@PreAuthorize("hasAnyRole('BARISTA', 'MANAGER')")
+@PreAuthorize("hasAnyRole('BARISTA', 'MANAGER','CHEF')")
 public class OrderController {
 
     private final OrderService orderService;
