@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/inventory")
-@PreAuthorize("hasRole('MANAGER')")
+@PreAuthorize("hasAnyRole('MANAGER','CHEF')")
 public class InventoryController {
 
     private final InventoryService inventoryService;
@@ -32,6 +32,7 @@ public class InventoryController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<InventoryItemDto> createNewItem(@RequestBody InventoryItemDto request) {
         InventoryItemDto newItem = inventoryService.addNewInventoryItem(request);
         return new ResponseEntity<>(newItem, HttpStatus.CREATED);
