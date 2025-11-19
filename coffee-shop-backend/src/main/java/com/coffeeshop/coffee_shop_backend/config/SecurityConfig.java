@@ -35,13 +35,14 @@ public class SecurityConfig {
                                 .requestMatchers("/api/auth/**").permitAll()
 
                                 // Manager-Only Endpoints
-                                .requestMatchers("/api/menu/**").hasRole("MANAGER")
+                                .requestMatchers("/api/menu/**").hasAnyRole("MANAGER","BARISTA")
 //                        .requestMatchers("/api/inventory/**").hasRole("MANAGER")
                                 .requestMatchers("/api/reports/**").hasRole("MANAGER")
 
                                 //Manager and Chef(view) Endpoints
                                 .requestMatchers(HttpMethod.GET, "/api/inventory/**").hasAnyRole("MANAGER", "CHEF")
                                 .requestMatchers(HttpMethod.PUT, "/api/inventory/**").hasAnyRole("MANAGER", "CHEF")
+
                                 .requestMatchers(HttpMethod.POST, "/api/inventory/**").hasRole("MANAGER")
 
                                 // Barista + Manager Endpoints

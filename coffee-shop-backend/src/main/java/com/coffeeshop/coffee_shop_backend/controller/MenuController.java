@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/menu")
-@PreAuthorize("hasRole('MANAGER')")
+@PreAuthorize("hasRole('MANAGER','BARISTA')")
 public class MenuController {
 
     private final MenuService menuService;

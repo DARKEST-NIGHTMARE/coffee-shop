@@ -101,7 +101,7 @@ public class OrderService {
     }
 
     public List<OrderResponseDto> getActiveOrders() {
-        List<OrderStatus> activeStatuses = List.of(OrderStatus.PENDING, OrderStatus.IN_PROGRESS);
+        List<OrderStatus> activeStatuses = List.of(OrderStatus.PENDING, OrderStatus.IN_PROGRESS, OrderStatus.PREPARED);
         return shopOrderRepository.findAllByStatusInOrderByOrderTimestampAsc(activeStatuses)
                 .stream()
                 .map(OrderResponseDto::fromEntity)
